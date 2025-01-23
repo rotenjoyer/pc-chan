@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Chan Progress</title>
+    <style>
+        /* Use a retro font locally */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace; /* Retro font */
+            background-color: #e0f7fa; /* Very light blue */
+            color: #333;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            color: #60a5fa; /* Pastel blue color */
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .progress-bar {
+            width: 80%;
+            background: #ddd;
+            border-radius: 25px;
+            overflow: hidden;
+            height: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #a3c4f3, #78aaff); /* Pastel blue gradient */
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+        .info {
+            margin-top: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #60a5fa; /* Pastel blue */
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            background: #2196F3; /* Blue background */
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #1976D2; /* Darker blue on hover */
+        }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .gif-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .gif-container img {
+            width: 100px;
+            height: auto;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <h1>PC Chan Progress</h1>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+    <div class="info" id="info">฿0 saved out of ฿23000</div>
+
+    <!-- Input for custom amount -->
+    <input type="number" id="customAmount" placeholder="Enter custom amount" />
+
+    <!-- Buttons -->
+    <button onclick="addFunds(300)">Add ฿300</button>
+    <button onclick="addCustomFunds()">Add Custom ฿</button>
+    <button onclick="undoFunds(300)">Undo ฿300</button>
+    <button onclick="removeCustomAmount()">Remove Custom ฿</button>
+
+    <!-- GIF container for transparent gif -->
+    <div class="gif-container">
+        <img src="your-transparent-gif-link-here.gif" alt="Cute GIF" />
+    </div>
+
+    <script>
+        let savedAmount = parseFloat(localStorage.getItem('savedAmount')) || 0;
+        const goalAmount = 23000;
+        let transactionHistory = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+
+        function updateProgress() {
+            const progress = document.getElementById('progress');
+            const info = document.getElementById('info');
+            const progressPercentage = (savedAmount / goalAmount) * 100;
+            progress.style.width = progressPercentage + '%';
+            info.textContent = `฿${savedAmount} saved out of ฿${goalAmount}`;
+
+            // Save progress to local storage
+            localStorage.setItem('savedAmount', savedAmount);
+            localStorage.setItem('transactionHistory', JSON.stringify(transactionHistory));
+        }
+
+        function addFunds(amount) {
+            if (savedAmount < goalAmount) {
+                transactionHistory.push(amount);
+                savedAmount = Math.min(savedAmount + amount, goalAmount);
+                updateProgress();
+            }
+        }
+
+        function addCustomFunds() {
+            const customAmount = document.getElementById('customAmount').value;
+            if (customAmount && !isNaN(customAmount) && customAmount > 0) {
+                savedAmount = Math.min(savedAmount + parseFloat(customAmount), goalAmount);
+                transactionHistory.push(parseFloat(customAmount));
+                updateProgress();
+            } else {
+                alert("Please enter a valid amount.");
+            }
+        }
+
+        function removeCustomAmount() {
+            const customAmount = document.getElementById('customAmount').value;
+            if (customAmount && !isNaN(customAmount) && customAmount > 0) {
+                savedAmount = Math.max(savedAmount - parseFloat(customAmount), 0);
+                transactionHistory.push(-parseFloat(customAmount));
+                updateProgress();
+            } else {
+                alert("Please enter a valid amount to remove.");
+            }
+        }
+
+        function undoFunds(amount) {
+            if (transactionHistory.length > 0) {
+                const lastTransaction = transactionHistory.pop();
+                savedAmount = Math.max(savedAmount - lastTransaction, 0);
+                updateProgress();
+            }
+        }
+
+        // Initialize progress on page load
+        updateProgress();
+    </script>
+</body>
+</html>
