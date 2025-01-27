@@ -5,18 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Chan Progress</title>
     <style>
-        @keyframes sparkle {
-            0% {
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6);
-            }
-            100% {
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
-            }
-        }
-
         body {
             display: flex;
             flex-direction: column;
@@ -48,9 +36,6 @@
             background: linear-gradient(90deg, #a3c4f3, #78aaff);
             width: 0%;
             transition: width 0.4s ease;
-        }
-        .progress.sparkle {
-            animation: sparkle 1s ease-in-out;
         }
         .info {
             margin-top: 10px;
@@ -98,15 +83,6 @@
             border-radius: 5px;
             border: 1px solid #ddd;
         }
-        .gif-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .gif-container img {
-            width: 100px;
-            height: auto;
-            opacity: 0.8;
-        }
     </style>
 </head>
 <body>
@@ -123,10 +99,6 @@
         <button class="remove-button" onclick="undoFunds()">Undo Last</button>
         <button class="add-button" onclick="addCustomFunds()">Add Custom ฿</button>
         <button class="remove-button" onclick="removeCustomAmount()">Remove Custom ฿</button>
-    </div>
-
-    <div class="gif-container">
-        <img src="https://cdna.artstation.com/p/assets/images/images/048/375/270/original/maria-moreno-ezgif-com-gif-maker.gif?1649877491" alt="Cute GIF" />
     </div>
 
     <script>
@@ -149,13 +121,6 @@
             if (savedAmount < goalAmount) {
                 transactionHistory.push(amount);
                 savedAmount = Math.min(savedAmount + amount, goalAmount);
-                const progress = document.getElementById('progress');
-                progress.classList.add('sparkle');
-                
-                // Force reflow to trigger the animation
-                void progress.offsetWidth; // This forces the reflow
-                
-                setTimeout(() => progress.classList.remove('sparkle'), 1000);
                 updateProgress();
             }
         }
@@ -165,13 +130,6 @@
             if (customAmount && !isNaN(customAmount) && customAmount > 0) {
                 savedAmount = Math.min(savedAmount + parseFloat(customAmount), goalAmount);
                 transactionHistory.push(parseFloat(customAmount));
-                const progress = document.getElementById('progress');
-                progress.classList.add('sparkle');
-                
-                // Force reflow to trigger the animation
-                void progress.offsetWidth; // This forces the reflow
-                
-                setTimeout(() => progress.classList.remove('sparkle'), 1000);
                 updateProgress();
             } else {
                 alert("Please enter a valid amount.");
