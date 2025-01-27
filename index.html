@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Chan Progress</title>
     <style>
-        /* Use a retro font locally */
         body {
             display: flex;
             flex-direction: column;
@@ -13,8 +12,8 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Courier New', Courier, monospace; /* Retro font */
-            background-color: #e0f7fa; /* Very light blue */
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e0f7fa;
             color: #333;
         }
         h1 {
@@ -34,7 +33,7 @@
         }
         .progress {
             height: 100%;
-            background: linear-gradient(90deg, #a3c4f3, #78aaff); /* Pastel blue gradient */
+            background: linear-gradient(90deg, #a3c4f3, #78aaff); 
             width: 0%;
             transition: width 0.4s ease;
         }
@@ -42,23 +41,42 @@
             margin-top: 10px;
             font-size: 1.5rem;
             font-weight: bold;
-            color: #60a5fa; /* Pastel blue */
+            color: #60a5fa;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            width: 80%;
         }
         button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 1.2rem;
+            padding: 10px;
+            font-size: 1rem;
             border: none;
             border-radius: 5px;
-            background: #2196F3; /* Blue background */
-            color: white;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.2s;
         }
         button:hover {
-            background: #1976D2; /* Darker blue on hover */
+            transform: scale(1.05);
+        }
+        .add-button {
+            background: #d4edda; 
+            color: #155724;
+        }
+        .add-button:hover {
+            background: #c3e6cb; 
+        }
+        .remove-button {
+            background: #f8d7da; 
+            color: #721c24;
+        }
+        .remove-button:hover {
+            background: #f5c6cb; 
         }
         input[type="number"] {
+            grid-column: span 2;
             padding: 10px;
             font-size: 1.2rem;
             margin-top: 10px;
@@ -86,11 +104,13 @@
     <!-- Input for custom amount -->
     <input type="number" id="customAmount" placeholder="Enter custom amount" />
 
-    <!-- Buttons -->
-    <button onclick="addFunds(300)">Add ฿300</button>
-    <button onclick="addCustomFunds()">Add Custom ฿</button>
-    <button onclick="undoFunds(300)">Undo ฿300</button>
-    <button onclick="removeCustomAmount()">Remove Custom ฿</button>
+    <!-- Buttons arranged in grid layout -->
+    <div class="grid">
+        <button class="add-button" onclick="addFunds(300)">Add ฿300</button>
+        <button class="remove-button" onclick="undoFunds()">Undo Last</button>
+        <button class="add-button" onclick="addCustomFunds()">Add Custom ฿</button>
+        <button class="remove-button" onclick="removeCustomAmount()">Remove Custom ฿</button>
+    </div>
 
     <!-- GIF container for transparent gif -->
     <div class="gif-container">
@@ -144,7 +164,7 @@
             }
         }
 
-        function undoFunds(amount) {
+        function undoFunds() {
             if (transactionHistory.length > 0) {
                 const lastTransaction = transactionHistory.pop();
                 savedAmount = Math.max(savedAmount - lastTransaction, 0);
