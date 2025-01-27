@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Chan Progress</title>
     <style>
+        
+    @keyframes sparkle 
+    {
+        0% {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+        50% {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6);
+        }
+        100% {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+    }
+
+    .progress {
+        height: 100%;
+        background: linear-gradient(90deg, #a3c4f3, #78aaff); 
+        width: 0%;
+        transition: width 0.4s ease;
+    }
+
+    .progress.sparkle {
+        animation:
+
         body {
             display: flex;
             flex-direction: column;
@@ -134,10 +158,19 @@
             localStorage.setItem('transactionHistory', JSON.stringify(transactionHistory));
         }
 
+
         function addFunds(amount) {
             if (savedAmount < goalAmount) {
                 transactionHistory.push(amount);
                 savedAmount = Math.min(savedAmount + amount, goalAmount);
+                const progress = document.getElementById('progress');
+                
+                // Add sparkle effect
+                progress.classList.add('sparkle');
+                
+                // Remove sparkle effect after animation ends
+                setTimeout(() => progress.classList.remove('sparkle'), 1000);
+                
                 updateProgress();
             }
         }
@@ -147,11 +180,20 @@
             if (customAmount && !isNaN(customAmount) && customAmount > 0) {
                 savedAmount = Math.min(savedAmount + parseFloat(customAmount), goalAmount);
                 transactionHistory.push(parseFloat(customAmount));
+                const progress = document.getElementById('progress');
+                
+                // Add sparkle effect
+                progress.classList.add('sparkle');
+                
+                // Remove sparkle effect after animation ends
+                setTimeout(() => progress.classList.remove('sparkle'), 1000);
+                
                 updateProgress();
             } else {
                 alert("Please enter a valid amount.");
             }
         }
+    
 
         function removeCustomAmount() {
             const customAmount = document.getElementById('customAmount').value;
