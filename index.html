@@ -5,29 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Chan Progress</title>
     <style>
-        
-    @keyframes sparkle 
-    {
-        0% {
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
+        @keyframes sparkle {
+            0% {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
+            }
         }
-        50% {
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6);
-        }
-        100% {
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
-        }
-    }
-
-    .progress {
-        height: 100%;
-        background: linear-gradient(90deg, #a3c4f3, #78aaff); 
-        width: 0%;
-        transition: width 0.4s ease;
-    }
-
-    .progress.sparkle {
-        animation:
 
         body {
             display: flex;
@@ -40,12 +28,12 @@
             background-color: #e0f7fa;
             color: #333;
         }
-     		h1 {
-    margin-bottom: 20px;
-    font-size: 2.5rem;
-    color: #60a5fa; /* Pastel blue color */
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            color: #60a5fa;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
         }
         .progress-bar {
             width: 80%;
@@ -57,9 +45,12 @@
         }
         .progress {
             height: 100%;
-            background: linear-gradient(90deg, #a3c4f3, #78aaff); 
+            background: linear-gradient(90deg, #a3c4f3, #78aaff);
             width: 0%;
             transition: width 0.4s ease;
+        }
+        .progress.sparkle {
+            animation: sparkle 1s ease-in-out;
         }
         .info {
             margin-top: 10px;
@@ -86,18 +77,18 @@
             transform: scale(1.05);
         }
         .add-button {
-            background: #d4edda; 
+            background: #d4edda;
             color: #155724;
         }
         .add-button:hover {
-            background: #c3e6cb; 
+            background: #c3e6cb;
         }
         .remove-button {
-            background: #f8d7da; 
+            background: #f8d7da;
             color: #721c24;
         }
         .remove-button:hover {
-            background: #f5c6cb; 
+            background: #f5c6cb;
         }
         input[type="number"] {
             grid-column: span 2;
@@ -125,10 +116,8 @@
     </div>
     <div class="info" id="info">฿0 saved out of ฿23000</div>
 
-    <!-- Input for custom amount -->
     <input type="number" id="customAmount" placeholder="Enter custom amount" />
 
-    <!-- Buttons arranged in grid layout -->
     <div class="grid">
         <button class="add-button" onclick="addFunds(300)">Add ฿300</button>
         <button class="remove-button" onclick="undoFunds()">Undo Last</button>
@@ -136,7 +125,6 @@
         <button class="remove-button" onclick="removeCustomAmount()">Remove Custom ฿</button>
     </div>
 
-    <!-- GIF container for transparent gif -->
     <div class="gif-container">
         <img src="https://cdna.artstation.com/p/assets/images/images/048/375/270/original/maria-moreno-ezgif-com-gif-maker.gif?1649877491" alt="Cute GIF" />
     </div>
@@ -153,24 +141,17 @@
             progress.style.width = progressPercentage + '%';
             info.textContent = `฿${savedAmount} saved out of ฿${goalAmount}`;
 
-            // Save progress to local storage
             localStorage.setItem('savedAmount', savedAmount);
             localStorage.setItem('transactionHistory', JSON.stringify(transactionHistory));
         }
-
 
         function addFunds(amount) {
             if (savedAmount < goalAmount) {
                 transactionHistory.push(amount);
                 savedAmount = Math.min(savedAmount + amount, goalAmount);
                 const progress = document.getElementById('progress');
-                
-                // Add sparkle effect
                 progress.classList.add('sparkle');
-                
-                // Remove sparkle effect after animation ends
                 setTimeout(() => progress.classList.remove('sparkle'), 1000);
-                
                 updateProgress();
             }
         }
@@ -181,19 +162,13 @@
                 savedAmount = Math.min(savedAmount + parseFloat(customAmount), goalAmount);
                 transactionHistory.push(parseFloat(customAmount));
                 const progress = document.getElementById('progress');
-                
-                // Add sparkle effect
                 progress.classList.add('sparkle');
-                
-                // Remove sparkle effect after animation ends
                 setTimeout(() => progress.classList.remove('sparkle'), 1000);
-                
                 updateProgress();
             } else {
                 alert("Please enter a valid amount.");
             }
         }
-    
 
         function removeCustomAmount() {
             const customAmount = document.getElementById('customAmount').value;
@@ -214,8 +189,8 @@
             }
         }
 
-        // Initialize progress on page load
         updateProgress();
     </script>
 </body>
 </html>
+
