@@ -151,6 +151,10 @@
                 savedAmount = Math.min(savedAmount + amount, goalAmount);
                 const progress = document.getElementById('progress');
                 progress.classList.add('sparkle');
+                
+                // Force reflow to trigger the animation
+                void progress.offsetWidth; // This forces the reflow
+                
                 setTimeout(() => progress.classList.remove('sparkle'), 1000);
                 updateProgress();
             }
@@ -163,6 +167,10 @@
                 transactionHistory.push(parseFloat(customAmount));
                 const progress = document.getElementById('progress');
                 progress.classList.add('sparkle');
+                
+                // Force reflow to trigger the animation
+                void progress.offsetWidth; // This forces the reflow
+                
                 setTimeout(() => progress.classList.remove('sparkle'), 1000);
                 updateProgress();
             } else {
@@ -193,4 +201,3 @@
     </script>
 </body>
 </html>
-
